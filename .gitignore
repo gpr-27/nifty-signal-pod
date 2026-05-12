@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+*.pyo
+venv/
+logs/
+mlruns/
+results/
+adapters/
+*.parquet
+.DS_Store
