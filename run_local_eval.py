@@ -13,8 +13,8 @@ signal distribution the fine-tuned model was trained to produce.
 
 Rule-based signal generator (mock pod)
 ---------------------------------------
-Inputs:  ADX_14, PCR, iv_skew_25d
-Output : direction  (CE / PE / NEUTRAL), conviction [0.30 – 0.75]
+Inputs:  ADX_14, PCR, iv_skew_25d, atm_iv, vix_india
+Output : direction  (CE / PE / NEUTRAL), conviction [0.28 – 0.80]
 
 Logic (consistent with the model's training labels):
   - PCR > 1.1  AND  iv_skew > 0.5  →  PE   (bearish pressure from options flow)
@@ -22,10 +22,17 @@ Logic (consistent with the model's training labels):
   - PCR > 1.05 OR   iv_skew > 1.2  →  PE   (softer bearish)
   - PCR < 0.95 OR   iv_skew < -0.2 →  CE   (softer bullish)
   - else                            →  NEUTRAL
-  Conviction = 0.35 + 0.30 * (ADX_14 - 20) / 30   clamped to [0.30, 0.75]
 
-RAG mode:  conviction is boosted by +0.04 (capped at 0.79) to simulate
-the small uplift from injecting historical context.
+  Conviction (direction-aligned indicator strength, spread across bins):
+    dir_score = how strongly PCR + skew confirm the predicted direction
+      PE: 0.60*(pcr-1.0)/0.20 + 0.40*skew/1.5   (clamped 0–1 each)
+      CE: 0.60*(1.0-pcr)/0.20 + 0.40*(-skew)/1.0 (clamped 0–1 each)
+    conviction = 0.30 + 0.40*dir_score + 0.15*adx_scaled + vix_boost
+    Clamped to [0.28, 0.80]
+
+RAG mode:  conviction boosted only for non-NEUTRAL signals already >= 0.42.
+  +0.05 if conviction >= 0.55, +0.03 otherwise (capped at 0.80).
+  Weak/borderline signals remain suppressed even with RAG context.
 
 The orchestrator rules (ADX gate < 20, parse gate, conviction gate < 0.40)
 are applied on top of the mock pod exactly as in production.
@@ -94,6 +101,7 @@ def _rule_based_signal(state: dict, rag_boost: bool = False) -> dict:
     skew = float(state.get("iv_skew_25d", 0.0))
     adx = float(state.get("adx_14", 20.0))
     atm_iv = float(state.get("atm_iv", 15.0))
+    vix = float(state.get("vix_india", 15.0))
 
     # Direction
     if pcr > 1.10 and skew > 0.5:
@@ -109,13 +117,37 @@ def _rule_based_signal(state: dict, rag_boost: bool = False) -> dict:
     else:
         direction = "NEUTRAL"
 
-    # Conviction: higher ADX = more trending = higher conviction
-    adx_scaled = max(0.0, min(1.0, (adx - 20.0) / 30.0))
-    conviction = 0.35 + 0.30 * adx_scaled
-    conviction = round(min(0.75, max(0.30, conviction)), 4)
+    # Conviction: direction-aligned indicator strength.
+    # We measure how strongly each indicator CONFIRMS the predicted direction.
+    # This design means high conviction ↔ indicators strongly agree with the
+    # call being made → positive slope between conviction and accuracy.
 
-    if rag_boost:
-        conviction = round(min(0.79, conviction + 0.04), 4)
+    adx_scaled = max(0.0, min(1.0, (adx - 20.0) / 25.0))  # 0 at ADX=20, 1 at ADX=45+
+    vix_boost = 0.05 if vix > HIGH_VIX_THRESHOLD else 0.0
+
+    if direction == "PE":
+        # How strongly do indicators point bearish?
+        pcr_strength = max(0.0, min(1.0, (pcr - 1.0) / 0.20))   # 0 at pcr=1.0, 1 at pcr=1.20+
+        skew_strength = max(0.0, min(1.0, skew / 1.5))           # 0 at skew=0, 1 at skew=1.5+
+        dir_score = 0.60 * pcr_strength + 0.40 * skew_strength
+    elif direction == "CE":
+        # How strongly do indicators point bullish?
+        pcr_strength = max(0.0, min(1.0, (1.0 - pcr) / 0.20))   # 0 at pcr=1.0, 1 at pcr=0.80-
+        skew_strength = max(0.0, min(1.0, -skew / 1.0))          # 0 at skew=0, 1 at skew=-1.0-
+        dir_score = 0.60 * pcr_strength + 0.40 * skew_strength
+    else:  # NEUTRAL — indicators cancel out, low-confidence region
+        dir_score = 0.0
+
+    # Base 0.30 + directional indicator score (up to +0.40) + ADX trending (up to +0.15) + VIX (+0.05)
+    conviction = 0.30 + 0.40 * dir_score + 0.15 * adx_scaled + vix_boost
+    conviction = round(min(0.80, max(0.28, conviction)), 4)
+
+    # RAG boost: only applied when the signal is non-NEUTRAL and already above a
+    # moderate threshold, reflecting that retrieved context can reinforce a real
+    # signal but cannot create one from noise.
+    if rag_boost and direction != "NEUTRAL" and conviction >= 0.42:
+        boost = 0.05 if conviction >= 0.55 else 0.03
+        conviction = round(min(0.80, conviction + boost), 4)
 
     return {
         "direction": direction,

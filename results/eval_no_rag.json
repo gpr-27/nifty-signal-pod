@@ -12,8 +12,8 @@
     "schema_pass_rate": 1.0,
     "parse_failure_rate": 0.0,
     "suppression_rate": 0.2,
-    "downgrade_rate": 0.1333,
-    "overall_directional_accuracy": 0.4753
+    "downgrade_rate": 0.0103,
+    "overall_directional_accuracy": 0.5159
   },
   "walk_forward_windows": [
     {
@@ -25,13 +25,13 @@
         35
       ],
       "n_total": 65,
-      "n_actionable": 31,
-      "directional_accuracy": 0.4839,
-      "ci_low": 0.3197,
-      "ci_high": 0.6516,
+      "n_actionable": 36,
+      "directional_accuracy": 0.5,
+      "ci_low": 0.3447,
+      "ci_high": 0.6553,
       "pass": false,
       "suppression_rate": 0.0,
-      "downgrade_rate": 0.2,
+      "downgrade_rate": 0.0462,
       "mean_vix": 14.78
     },
     {
@@ -43,13 +43,13 @@
         40
       ],
       "n_total": 65,
-      "n_actionable": 31,
-      "directional_accuracy": 0.3548,
-      "ci_low": 0.2112,
-      "ci_high": 0.5305,
+      "n_actionable": 37,
+      "directional_accuracy": 0.3784,
+      "ci_low": 0.2406,
+      "ci_high": 0.539,
       "pass": false,
       "suppression_rate": 0.0,
-      "downgrade_rate": 0.2,
+      "downgrade_rate": 0.0154,
       "mean_vix": 16.72
     },
     {
@@ -61,12 +61,14 @@
         45
       ],
       "n_total": 65,
-      "n_actionable": 0,
-      "directional_accuracy": null,
-      "ci_low": null,
-      "ci_high": null,
+      "n_actionable": 9,
+      "directional_accuracy": 0.6667,
+      "ci_low": 0.3542,
+      "ci_high": 0.8794,
+      "pass": true,
       "suppression_rate": 0.8,
-      "downgrade_rate": 0.2
+      "downgrade_rate": 0.0,
+      "mean_vix": 27.72
     },
     {
       "days": [
@@ -77,13 +79,13 @@
         50
       ],
       "n_total": 65,
-      "n_actionable": 19,
-      "directional_accuracy": 0.5263,
-      "ci_low": 0.3171,
-      "ci_high": 0.7267,
+      "n_actionable": 26,
+      "directional_accuracy": 0.5385,
+      "ci_low": 0.3546,
+      "ci_high": 0.7124,
       "pass": true,
       "suppression_rate": 0.4,
-      "downgrade_rate": 0.2,
+      "downgrade_rate": 0.0,
       "mean_vix": 23.47
     },
     {
@@ -125,33 +127,45 @@
   ],
   "regime_slice": {
     "high_vix": {
-      "n": 91,
-      "correct": 46,
-      "accuracy": 0.5055,
-      "ci_low": 0.4046,
-      "ci_high": 0.6059
+      "n": 113,
+      "correct": 59,
+      "accuracy": 0.5221,
+      "ci_low": 0.4308,
+      "ci_high": 0.612
     },
     "low_vix": {
-      "n": 62,
-      "correct": 26,
-      "accuracy": 0.4194,
-      "ci_low": 0.3048,
-      "ci_high": 0.5433
+      "n": 67,
+      "correct": 29,
+      "accuracy": 0.4328,
+      "ci_low": 0.321,
+      "ci_high": 0.5519
     }
   },
   "conviction_calibration": {
     "bins": [
       {
         "bin": "[0.4, 0.6)",
-        "n": 153,
-        "accuracy": 0.47058823529411764,
-        "mean_conviction": 0.4331418300653595
+        "n": 110,
+        "accuracy": 0.4909090909090909,
+        "mean_conviction": 0.5406390909090909
+      },
+      {
+        "bin": "[0.6, 0.8)",
+        "n": 69,
+        "accuracy": 0.4927536231884058,
+        "mean_conviction": 0.6880014492753623
+      },
+      {
+        "bin": "[0.8, 1.0)",
+        "n": 1,
+        "accuracy": 0.0,
+        "mean_conviction": 0.8
       }
     ],
-    "slope": -0.2981,
-    "intercept": 0.5997,
-    "r_squared": 0.0002,
-    "p_value": 0.8715,
+    "slope": 0.1587,
+    "intercept": 0.3939,
+    "r_squared": 0.0008,
+    "p_value": 0.7103,
     "interpretation": "conviction is NOT reliably informative"
   },
   "pass_fail": {
@@ -166,7 +180,7 @@
       "pass": true
     },
     "overall_directional_accuracy": {
-      "value": 0.4753,
+      "value": 0.5159,
       "threshold": 0.52,
       "pass": false
     },
@@ -176,7 +190,7 @@
       "pass": true
     },
     "high_vix_accuracy": {
-      "value": 0.5055,
+      "value": 0.5221,
       "threshold": 0.48,
       "pass": true
     }
