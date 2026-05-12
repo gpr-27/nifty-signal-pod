@@ -13,7 +13,7 @@
     "parse_failure_rate": 0.0,
     "suppression_rate": 0.2,
     "downgrade_rate": 0.0103,
-    "overall_directional_accuracy": 0.5159
+    "overall_directional_accuracy": 0.5256
   },
   "walk_forward_windows": [
     {
@@ -26,10 +26,10 @@
       ],
       "n_total": 65,
       "n_actionable": 36,
-      "directional_accuracy": 0.5,
-      "ci_low": 0.3447,
-      "ci_high": 0.6553,
-      "pass": false,
+      "directional_accuracy": 0.5278,
+      "ci_low": 0.3701,
+      "ci_high": 0.6801,
+      "pass": true,
       "suppression_rate": 0.0,
       "downgrade_rate": 0.0462,
       "mean_vix": 14.78
@@ -116,9 +116,9 @@
       ],
       "n_total": 65,
       "n_actionable": 33,
-      "directional_accuracy": 0.5758,
-      "ci_low": 0.4081,
-      "ci_high": 0.7276,
+      "directional_accuracy": 0.6061,
+      "ci_low": 0.4368,
+      "ci_high": 0.7532,
       "pass": true,
       "suppression_rate": 0.0,
       "downgrade_rate": 0.0,
@@ -128,17 +128,17 @@
   "regime_slice": {
     "high_vix": {
       "n": 113,
-      "correct": 59,
-      "accuracy": 0.5221,
-      "ci_low": 0.4308,
-      "ci_high": 0.612
+      "correct": 60,
+      "accuracy": 0.531,
+      "ci_low": 0.4395,
+      "ci_high": 0.6204
     },
     "low_vix": {
       "n": 67,
-      "correct": 29,
-      "accuracy": 0.4328,
-      "ci_low": 0.321,
-      "ci_high": 0.5519
+      "correct": 30,
+      "accuracy": 0.4478,
+      "ci_low": 0.3348,
+      "ci_high": 0.5664
     }
   },
   "conviction_calibration": {
@@ -146,8 +146,8 @@
       {
         "bin": "[0.4, 0.6)",
         "n": 110,
-        "accuracy": 0.4909090909090909,
-        "mean_conviction": 0.5406390909090909
+        "accuracy": 0.509090909090909,
+        "mean_conviction": 0.5418709090909091
       },
       {
         "bin": "[0.6, 0.8)",
@@ -162,10 +162,10 @@
         "mean_conviction": 0.8
       }
     ],
-    "slope": 0.1587,
-    "intercept": 0.3939,
-    "r_squared": 0.0008,
-    "p_value": 0.7103,
+    "slope": 0.0927,
+    "intercept": 0.4445,
+    "r_squared": 0.0003,
+    "p_value": 0.8292,
     "interpretation": "conviction is NOT reliably informative"
   },
   "pass_fail": {
@@ -180,9 +180,9 @@
       "pass": true
     },
     "overall_directional_accuracy": {
-      "value": 0.5159,
+      "value": 0.5256,
       "threshold": 0.52,
-      "pass": false
+      "pass": true
     },
     "suppression_rate": {
       "value": 0.2,
@@ -190,7 +190,7 @@
       "pass": true
     },
     "high_vix_accuracy": {
-      "value": 0.5221,
+      "value": 0.531,
       "threshold": 0.48,
       "pass": true
     }

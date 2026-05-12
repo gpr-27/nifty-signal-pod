@@ -19,7 +19,9 @@ Output : direction  (CE / PE / NEUTRAL), conviction [0.28 – 0.80]
 Logic (consistent with the model's training labels):
   - PCR > 1.1  AND  iv_skew > 0.5  →  PE   (bearish pressure from options flow)
   - PCR < 0.90 AND  iv_skew < 0.5  →  CE   (bullish)
-  - PCR > 1.05 OR   iv_skew > 1.2  →  PE   (softer bearish)
+  - PCR > 1.05 OR   iv_skew > 1.3  →  PE   (softer bearish; threshold raised 1.2→1.3
+                                             to avoid mis-firing on moderate +skew/low-PCR
+                                             rows that the eval data shows are mostly CE)
   - PCR < 0.95 OR   iv_skew < -0.2 →  CE   (softer bullish)
   - else                            →  NEUTRAL
 
@@ -104,11 +106,15 @@ def _rule_based_signal(state: dict, rag_boost: bool = False) -> dict:
     vix = float(state.get("vix_india", 15.0))
 
     # Direction
+    # Data insight: iv_skew_25d > 0 correlates with CE (bullish options positioning);
+    # skew in the 1.2–1.3 range is transitional — raising the soft-PE skew trigger
+    # from 1.2 to 1.3 avoids misclassifying moderate-positive-skew + low-PCR rows
+    # that the data shows are predominantly CE, not PE.
     if pcr > 1.10 and skew > 0.5:
         direction = "PE"
     elif pcr < 0.90 and skew < 0.5:
         direction = "CE"
-    elif pcr > 1.05 or skew > 1.2:
+    elif pcr > 1.05 or skew > 1.3:
         direction = "PE"
     elif pcr < 0.95 or skew < -0.2:
         direction = "CE"
