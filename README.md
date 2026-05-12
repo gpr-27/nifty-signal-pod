@@ -140,6 +140,29 @@ mlflow ui --backend-store-uri mlruns/
 
 ---
 
+## Submission
+
+**How to submit (per the project brief):**
+
+1. **Email** a single link to your **private GitHub repository** to the address provided in your invitation email.
+2. **Subject line:** `AI-SLM Screening — [Your Name]`
+3. **Email address:** surya@quantsingularity.in
+4. **Deadline:** As stated in your invitation email (IST). Late submissions are not reviewed.
+
+The repository must contain:
+- [ ] Fine-tuning notebook (Kaggle notebook URL in README — see above)
+- [ ] Orchestrator implementation (`orchestrator.py`)
+- [ ] MLflow artifacts (`mlruns/`)
+- [ ] LoRA adapter weights or download link (`adapters/nifty_signal_pod/`)
+- [ ] `requirements.txt`
+- [ ] `README.md` with setup instructions and run command
+- [ ] Eval suite code committed **before** the first training run (`eval_suite.py`)
+- [ ] **PDF report, 4–6 pages** (convert `REPORT.md` to PDF before sending)
+
+**Important:** The report carries more weight than the code. The PDF must be 4–6 pages. Convert `REPORT.md` to PDF using Pandoc, a browser print-to-PDF, or a Markdown-to-PDF tool before emailing the repository link.
+
+---
+
 ## Data audit findings (summary)
 
 Run `python data_audit.py` for the full report. Confirmed findings:
