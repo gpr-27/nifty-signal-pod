@@ -1,0 +1,184 @@
+{
+  "thresholds_committed": {
+    "directional_accuracy_min": 0.52,
+    "schema_pass_rate_min": 0.99,
+    "parse_failure_rate_max": 0.01,
+    "suppression_rate_max": 0.6,
+    "high_vix_accuracy_min": 0.48,
+    "high_vix_threshold": 18.0
+  },
+  "summary": {
+    "total_eval_rows": 390,
+    "schema_pass_rate": 1.0,
+    "parse_failure_rate": 0.0,
+    "suppression_rate": 0.2,
+    "downgrade_rate": 0.1333,
+    "overall_directional_accuracy": 0.4753
+  },
+  "walk_forward_windows": [
+    {
+      "days": [
+        31,
+        32,
+        33,
+        34,
+        35
+      ],
+      "n_total": 65,
+      "n_actionable": 31,
+      "directional_accuracy": 0.4839,
+      "ci_low": 0.3197,
+      "ci_high": 0.6516,
+      "pass": false,
+      "suppression_rate": 0.0,
+      "downgrade_rate": 0.2,
+      "mean_vix": 14.78
+    },
+    {
+      "days": [
+        36,
+        37,
+        38,
+        39,
+        40
+      ],
+      "n_total": 65,
+      "n_actionable": 31,
+      "directional_accuracy": 0.3548,
+      "ci_low": 0.2112,
+      "ci_high": 0.5305,
+      "pass": false,
+      "suppression_rate": 0.0,
+      "downgrade_rate": 0.2,
+      "mean_vix": 16.72
+    },
+    {
+      "days": [
+        41,
+        42,
+        43,
+        44,
+        45
+      ],
+      "n_total": 65,
+      "n_actionable": 0,
+      "directional_accuracy": null,
+      "ci_low": null,
+      "ci_high": null,
+      "suppression_rate": 0.8,
+      "downgrade_rate": 0.2
+    },
+    {
+      "days": [
+        46,
+        47,
+        48,
+        49,
+        50
+      ],
+      "n_total": 65,
+      "n_actionable": 19,
+      "directional_accuracy": 0.5263,
+      "ci_low": 0.3171,
+      "ci_high": 0.7267,
+      "pass": true,
+      "suppression_rate": 0.4,
+      "downgrade_rate": 0.2,
+      "mean_vix": 23.47
+    },
+    {
+      "days": [
+        51,
+        52,
+        53,
+        54,
+        55
+      ],
+      "n_total": 65,
+      "n_actionable": 39,
+      "directional_accuracy": 0.4359,
+      "ci_low": 0.293,
+      "ci_high": 0.5902,
+      "pass": false,
+      "suppression_rate": 0.0,
+      "downgrade_rate": 0.0,
+      "mean_vix": 21.75
+    },
+    {
+      "days": [
+        56,
+        57,
+        58,
+        59,
+        60
+      ],
+      "n_total": 65,
+      "n_actionable": 33,
+      "directional_accuracy": 0.5758,
+      "ci_low": 0.4081,
+      "ci_high": 0.7276,
+      "pass": true,
+      "suppression_rate": 0.0,
+      "downgrade_rate": 0.0,
+      "mean_vix": 21.01
+    }
+  ],
+  "regime_slice": {
+    "high_vix": {
+      "n": 91,
+      "correct": 46,
+      "accuracy": 0.5055,
+      "ci_low": 0.4046,
+      "ci_high": 0.6059
+    },
+    "low_vix": {
+      "n": 62,
+      "correct": 26,
+      "accuracy": 0.4194,
+      "ci_low": 0.3048,
+      "ci_high": 0.5433
+    }
+  },
+  "conviction_calibration": {
+    "bins": [
+      {
+        "bin": "[0.4, 0.6)",
+        "n": 153,
+        "accuracy": 0.47058823529411764,
+        "mean_conviction": 0.4331418300653595
+      }
+    ],
+    "slope": -0.2981,
+    "intercept": 0.5997,
+    "r_squared": 0.0002,
+    "p_value": 0.8715,
+    "interpretation": "conviction is NOT reliably informative"
+  },
+  "pass_fail": {
+    "schema_pass_rate": {
+      "value": 1.0,
+      "threshold": 0.99,
+      "pass": true
+    },
+    "parse_failure_rate": {
+      "value": 0.0,
+      "threshold": 0.01,
+      "pass": true
+    },
+    "overall_directional_accuracy": {
+      "value": 0.4753,
+      "threshold": 0.52,
+      "pass": false
+    },
+    "suppression_rate": {
+      "value": 0.2,
+      "threshold": 0.6,
+      "pass": true
+    },
+    "high_vix_accuracy": {
+      "value": 0.5055,
+      "threshold": 0.48,
+      "pass": true
+    }
+  }
+}

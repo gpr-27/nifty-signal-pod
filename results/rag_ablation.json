@@ -1,0 +1,12 @@
+{
+  "directional_accuracy_no_rag": 0.4753,
+  "directional_accuracy_rag": 0.4857,
+  "delta_accuracy_rag_minus_no_rag": 0.0104,
+  "rag_accuracy_improvement": true,
+  "mean_conviction_no_rag": 0.4357,
+  "mean_conviction_rag": 0.47,
+  "delta_conviction": 0.0343,
+  "neutral_rate_no_rag": 0.3436,
+  "neutral_rate_rag": 0.2436,
+  "interpretation": "RAG improved directional accuracy by 1.04pp (marginal)."
+}

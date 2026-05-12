@@ -4,7 +4,6 @@ __pycache__/
 venv/
 logs/
 mlruns/
-results/
 adapters/**/*.zip
 adapters/**/checkpoint-*/optimizer.pt
 adapters/**/checkpoint-*/scaler.pt
