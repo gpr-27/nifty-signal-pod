@@ -4,7 +4,7 @@ A fine-tuned small language model (TinyLlama-1.1B + LoRA) that reads a NIFTY
 50 options market-state snapshot and outputs a structured JSON trading signal,
 wrapped in a deterministic orchestrator that applies three suppression rules.
 
-**Kaggle notebook:** [Add URL after first run]
+**Kaggle notebook:** [https://www.kaggle.com/code/praneethg27/notebook9997f4f4e6](https://www.kaggle.com/code/praneethg27/notebook9997f4f4e6)
 
 ---
 
@@ -52,7 +52,7 @@ report, and writes `cleaned_finetune_instructions.jsonl`.
 ### 2. Fine-tune on Kaggle
 
 Upload `cleaned_finetune_instructions.jsonl` as a Kaggle dataset, then run
-`kaggle_finetune.py` as a notebook on T4 GPU.  Download the adapter to
+`kaggle_finetune.py` as a notebook on T4 GPU. Download the adapter to
 `adapters/nifty_signal_pod/`.
 
 ### 3. Run evaluation
@@ -100,11 +100,11 @@ On any failure (JSON parse error, model crash): NEUTRAL, conviction 0.0.
 
 ## Orchestrator rules
 
-| Order | Rule | Trigger | Action |
-|-------|------|---------|--------|
-| 1 | ADX gate | ADX_14 < 20 | Suppress — return NEUTRAL, don't call model |
-| 2 | Parse gate | JSON parse fails | Return NEUTRAL, log raw output |
-| 3 | Conviction gate | conviction < 0.40 | Downgrade direction to NEUTRAL |
+| Order | Rule            | Trigger           | Action                                      |
+| ----- | --------------- | ----------------- | ------------------------------------------- |
+| 1     | ADX gate        | ADX_14 < 20       | Suppress — return NEUTRAL, don't call model |
+| 2     | Parse gate      | JSON parse fails  | Return NEUTRAL, log raw output              |
+| 3     | Conviction gate | conviction < 0.40 | Downgrade direction to NEUTRAL              |
 
 Every decision is logged with `reason_code` + triggering values.
 
@@ -114,13 +114,13 @@ Every decision is logged with `reason_code` + triggering values.
 
 Set before training began:
 
-| Metric | Pass threshold |
-|--------|---------------|
+| Metric                             | Pass threshold   |
+| ---------------------------------- | ---------------- |
 | Directional accuracy (non-NEUTRAL) | ≥ 52% per window |
-| Schema pass rate | ≥ 99% |
-| Parse failure rate | < 1% |
-| Suppression rate (ADX) | ≤ 60% |
-| High-VIX accuracy (VIX ≥ 18) | ≥ 48% |
+| Schema pass rate                   | ≥ 99%            |
+| Parse failure rate                 | < 1%             |
+| Suppression rate (ADX)             | ≤ 60%            |
+| High-VIX accuracy (VIX ≥ 18)       | ≥ 48%            |
 
 ---
 
@@ -142,15 +142,15 @@ mlflow ui --backend-store-uri mlruns/
 
 ## Data audit findings (summary)
 
-Run `python data_audit.py` for the full report.  Confirmed findings:
+Run `python data_audit.py` for the full report. Confirmed findings:
 
-| # | Finding | Rows affected | Decision |
-|---|---------|--------------|----------|
-| 1 | Verbal conviction labels (`"high"`, `"moderate"`, `"low"`, `"strong"`, `"weak"`, `"high confidence"`, `"moderate confidence"`) in rows 49–92 | 39 | Mapped to numeric via deterministic lexicon; retained |
-| 2 | Mixed-format conviction (`"0.8 (high)"` pattern) | 6 | Numeric prefix extracted; retained |
-| 3 | `atm_iv == 10.0` floor/clamp | 37 | Kept — floor is a real market data feature |
-| 4 | Duplicate input vectors | 0 | N/A |
-| 5 | Eval-window leakage (generated_at > 2024-10-30) | **14** | **Dropped** — would contaminate walk-forward eval |
-| 6 | Malformed JSON, invalid direction/horizon | 0 | N/A |
+| #   | Finding                                                                                                                                      | Rows affected | Decision                                              |
+| --- | -------------------------------------------------------------------------------------------------------------------------------------------- | ------------- | ----------------------------------------------------- |
+| 1   | Verbal conviction labels (`"high"`, `"moderate"`, `"low"`, `"strong"`, `"weak"`, `"high confidence"`, `"moderate confidence"`) in rows 49–92 | 39            | Mapped to numeric via deterministic lexicon; retained |
+| 2   | Mixed-format conviction (`"0.8 (high)"` pattern)                                                                                             | 6             | Numeric prefix extracted; retained                    |
+| 3   | `atm_iv == 10.0` floor/clamp                                                                                                                 | 37            | Kept — floor is a real market data feature            |
+| 4   | Duplicate input vectors                                                                                                                      | 0             | N/A                                                   |
+| 5   | Eval-window leakage (generated_at > 2024-10-30)                                                                                              | **14**        | **Dropped** — would contaminate walk-forward eval     |
+| 6   | Malformed JSON, invalid direction/horizon                                                                                                    | 0             | N/A                                                   |
 
 **Final clean dataset: 286 rows** (95.3% retention)

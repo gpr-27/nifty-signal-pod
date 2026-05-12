@@ -5,6 +5,9 @@ venv/
 logs/
 mlruns/
 results/
-adapters/
+adapters/**/*.zip
+adapters/**/checkpoint-*/optimizer.pt
+adapters/**/checkpoint-*/scaler.pt
+adapters/**/checkpoint-*/rng_state.pth
 *.parquet
 .DS_Store
